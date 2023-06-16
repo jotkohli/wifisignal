@@ -1,7 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createReducer, createSlice} from '@reduxjs/toolkit';
 
-import {GetDataAction, DataUpdateAction, SaveDataAction} from './actions';
+import {
+  GetDataAction,
+  DataUpdateAction,
+  SaveDataAction,
+  DataUpdateActionSuccess,
+} from './actions';
 
 const initialState = {
   loading: false,
@@ -10,7 +15,11 @@ const initialState = {
 
 const reducer = createReducer(initialState, builder => {
   builder.addCase(SaveDataAction, (state, action) => {
-    console.log('action.payload', action.payload);
+    // console.log('action.payload', action.payload);
+    return {...state, data: action.payload};
+  });
+  builder.addCase(DataUpdateActionSuccess, (state, action) => {
+    // console.log('action.payload', action.payload);
     return {...state, data: action.payload};
   });
 });

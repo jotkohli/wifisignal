@@ -4,11 +4,15 @@
 
 import 'react-native';
 import React from 'react';
-import App from '../src/App';
+import App from '../App';
+import {render as rtlRender} from '@testing-library/react-native';
+import {Provider} from 'react-redux';
+import {store} from '../src/redux/store';
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
+const render = (component: React.ReactElement) =>
+  rtlRender(<Provider store={store}>{component}</Provider>);
 
 it('renders correctly', () => {
-  renderer.create(<App />);
+  const {toJSON} = render(<App />);
+  expect(toJSON()).toMatchSnapshot();
 });

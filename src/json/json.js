@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const dataArr = {
   '00D1LA8puAa1GINkVpfgC1TmO0m1': {
     bananas: 200,
@@ -4428,5 +4430,18 @@ const dataArr = {
     uid: 'zzvyAcTpYdUsL5S2SgwayV1ugOE2',
   },
 };
+
+const dataPropTypes = {
+  bananas: PropTypes.number.isRequired,
+  lastDayPlayed: PropTypes.string.isRequired,
+  longestStreak: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  stars: PropTypes.number.isRequired,
+  subscribed: PropTypes.bool.isRequired,
+  uid: PropTypes.string.isRequired,
+};
+Object.values(dataArr).forEach(data => {
+  PropTypes.checkPropTypes(dataPropTypes, data, 'property', 'dataArr');
+});
 
 export default dataArr;

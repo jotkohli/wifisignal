@@ -32,28 +32,31 @@ function* onGetDataUpdated({payload}) {
           return null;
         }
       });
-    let ranked = {
-      ...UpdatedData,
-      rank: UpdatedDataIndex,
-      isSearchedUser: true,
-    };
 
-    const length10 = data.sort((a, b) => b.bananas - a.bananas).slice(0, 10);
-    if (length10?.length > UpdatedDataIndex) {
+    if (UpdatedData !== undefined && UpdatedDataIndex >= 0) {
       let ranked = {
         ...UpdatedData,
-        rank: UpdatedDataIndex + 1,
+        rank: UpdatedDataIndex,
         isSearchedUser: true,
       };
-      data
-        .sort((a, b) => b.bananas - a.bananas)
-        .splice(UpdatedDataIndex, 1, ranked);
-      yield put(SaveDataAction(data));
-      console.log('newww: ', UpdatedDataIndex, data);
-    } else {
-      data.sort((a, b) => b.bananas - a.bananas).splice(9, 1, ranked);
 
+      const length10 = data.sort((a, b) => b.bananas - a.bananas).slice(0, 10);
+
+      if (length10.length > UpdatedDataIndex) {
+        ranked = {
+          ...UpdatedData,
+          rank: UpdatedDataIndex + 1,
+          isSearchedUser: true,
+        };
+        data
+          .sort((a, b) => b.bananas - a.bananas)
+          .splice(UpdatedDataIndex, 1, ranked);
+      } else {
+        data.sort((a, b) => b.bananas - a.bananas).splice(9, 1, ranked);
+      }
       yield put(SaveDataAction(data));
+    } else {
+      yield put(SaveDataAction({err: 'error'}));
     }
   } catch (err) {
     console.log(err);
@@ -65,3 +68,4 @@ function* sagaData() {
   yield takeEvery(DataUpdateAction, onGetDataUpdated);
 }
 export default sagaData;
+export {onGetDataRequested, onGetDataUpdated, sagaData};
